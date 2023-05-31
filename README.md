@@ -62,7 +62,7 @@ git submodule update
 
 **Compilation :**
 
-Naviguez jusqu'au sous-répertoire `ECDSASignature` et compilez le code.
+Naviguez jusqu'au sous-répertoire `composant_ECDSASignature ` et compilez le code.
 
 ```bash
 cd composant_ECDSASignature 
