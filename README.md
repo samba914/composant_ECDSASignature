@@ -56,6 +56,7 @@ Pour utiliser le composant ECDSASignature, vous devez d'abord cloner le dépôt 
 
 ```bash
 cd composant_ECDSASignature 
+git submodule add -b master https://github.com/weidai11/cryptopp composant_ECDSASignature/cryptopp
 git submodule init
 git submodule update
 ```
