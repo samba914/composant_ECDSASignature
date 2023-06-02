@@ -5,11 +5,10 @@
 	g++ -fPIC ${CPPFLAGS} -c $< -o $@
 
 ${EXE} : ${OBJS}
-	g++ ${OBJS} ${LDFLAGS} -o $@ ${LIBS}
+	g++ ${OBJS} ${LDFLAGS} -o $@
 
-${LIBSO} : ${LIBSO_OBJS}
+${LIBSO} : ${LIBSO_OBJS} cryptopp/libcryptopp.a
 	g++ -o $@ -shared ${LDFLAGS} $^ ${LIBS}
 
 ${LIB} : ${LIB_OBJS}
 	ar -cr $@ $^
-
