@@ -7,7 +7,7 @@
 ${EXE} : ${OBJS}
 	g++ ${OBJS} ${LDFLAGS} -o $@
 
-${LIBSO_TARGET} : ${LIBSO_OBJS} cryptopp/libcryptopp.a
+${LIBSO} : ${LIBSO_OBJS} cryptopp/libcryptopp.a
 	g++ -o $@ -shared ${LDFLAGS} $^ ${LIBS}
 
 ${LIB} : ${LIB_OBJS}

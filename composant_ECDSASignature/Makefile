@@ -8,12 +8,11 @@ COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
-LIBSO_TARGET = my_libso_target
 
 cryptopp/libcryptopp.a: 
 	$(MAKE) -C cryptopp/ CXXFLAGS=-fPIC
 
-all: cryptopp/libcryptopp.a $(LIBSO_TARGET)
+all: $(LIBSO) cryptopp/libcryptopp.a 
 
 include ../gcc.mk
 include ../pybind11.mk
@@ -28,3 +27,6 @@ clean:
 
 ${DESTINATION_LIBSO}: ${LIBSO}
 	cp $< $@
+
+${COMPOSANT}.o: ${COMPOSANT}.cpp
+	g++ -fPIC ${CPPFLAGS} -c $< -o $@
