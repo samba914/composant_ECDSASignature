@@ -4,7 +4,7 @@ CPPFLAGS += -std=c++11
 LIBS=`python3-config --ldflags`
 LIBS += -L./cryptopp/ -lcryptopp
 
-COMPOSANT = ECDSASignature_component
+COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o cryptopp/eccrypto.o cryptopp/osrng.o cryptopp/oids.o cryptopp/hex.o

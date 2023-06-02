@@ -1,5 +1,6 @@
+all: component1
 
-all: do_component
+component1:
+	cd composant_ECDSASignature && ${MAKE}
 
-do_component:
-	cd component && ${MAKE}
+
