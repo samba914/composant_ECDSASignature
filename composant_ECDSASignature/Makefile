@@ -8,17 +8,15 @@ COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
+LIBSO_TARGET = my_libso_target
 
 cryptopp/libcryptopp.a: 
 	$(MAKE) -C cryptopp/ CXXFLAGS=-fPIC
 
-all: cryptopp/libcryptopp.a $(LIBSO)
+all: cryptopp/libcryptopp.a $(LIBSO_TARGET)
 
 include ../gcc.mk
 include ../pybind11.mk
-
-$(LIBSO): $(LIBSO_OBJS) ${COMPOSANT}.cpp  # Ajout de la dépendance vers le fichier source
-	g++ -o $@ -shared ${LDFLAGS} $^ ${LIBS}
 
 test: $(LIBSO)
 	echo "execution du test"
