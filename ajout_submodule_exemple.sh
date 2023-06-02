@@ -1,1 +1,1 @@
-git submodule add https://github.com/jluuM2/micro-ecc/ component/microecc
+git submodule add -b master https://github.com/weidai11/cryptopp composant_ECDSASignature/cryptopp
