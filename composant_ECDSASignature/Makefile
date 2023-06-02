@@ -7,7 +7,7 @@ LIBS += -L./cryptopp/ -lcryptopp
 COMPOSANT = component_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
-LIBSO_OBJS = ${COMPOSANT}.o cryptopp/eccrypto.o cryptopp/osrng.o cryptopp/oids.o cryptopp/hex.o
+LIBSO_OBJS = ${COMPOSANT}.o cryptopp/eccrypto.o cryptopp/osrng.o cryptopp/hex.o
 
 all: test $(LIBSO)
 
