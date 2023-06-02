@@ -2,7 +2,7 @@ CPPFLAGS += `python3-config --includes`
 CPPFLAGS += -I./cryptopp/
 CPPFLAGS += -std=c++11
 LIBS=`python3-config --ldflags`
-LIBS += -L./cryptopp/ -lcryptopp
+
 
 COMPOSANT = component_ECDSASignature
 
