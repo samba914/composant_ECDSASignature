@@ -1,7 +1,7 @@
-#include <cryptopp/eccrypto.h>
-#include <cryptopp/osrng.h>
-#include <cryptopp/oids.h>
-#include <cryptopp/hex.h>
+#include <./cryptopp/eccrypto.h>
+#include <./cryptopp/osrng.h>
+#include <./cryptopp/oids.h>
+#include <./cryptopp/hex.h>
 #include <pybind11/pybind11.h>
 
 char version[]="1.0";
