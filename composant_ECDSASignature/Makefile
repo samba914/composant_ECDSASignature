@@ -17,6 +17,9 @@ all: cryptopp/libcryptopp.a $(LIBSO)
 include ../gcc.mk
 include ../pybind11.mk
 
+$(LIBSO): $(LIBSO_OBJS) ${COMPOSANT}.cpp  # Ajout de la dépendance vers le fichier source
+	g++ -o $@ -shared ${LDFLAGS} $^ ${LIBS}
+
 test: $(LIBSO)
 	echo "execution du test"
 	python3 test.py
