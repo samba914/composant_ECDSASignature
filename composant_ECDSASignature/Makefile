@@ -12,7 +12,7 @@ LIBSO_OBJS = ${COMPOSANT}.o
 cryptopp/libcryptopp.a: 
 	$(MAKE) -C cryptopp/ CXXFLAGS=-fPIC
 
-all: $(LIBSO) cryptopp/libcryptopp.a 
+all: cryptopp/libcryptopp.a $(LIBSO)
 
 include ../gcc.mk
 include ../pybind11.mk
