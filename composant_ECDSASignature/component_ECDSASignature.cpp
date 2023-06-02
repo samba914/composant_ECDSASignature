@@ -22,7 +22,7 @@ public:
 
     void Initialize(const std::string& hexPrivateKey)
     {
-        CryptoPP::StringSource ss(hexPrivateKey, true, new CryptoPP::HexDecoder(new CryptoPP::StringSink(privateKey)));
+        CryptoPP::StringSource ss(hexPrivateKey, true, new CryptoPP::HexDecoder(new CryptoPP::ArraySink(privateKey, privateKey.size())));
         ecdsaPrivateKey.Load(CryptoPP::StringStore(privateKey).Ref());
     }
 
