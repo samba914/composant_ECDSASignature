@@ -14,6 +14,9 @@ all: test $(LIBSO)
 include ../gcc.mk
 include ../pybind11.mk
 
+${COMPOSANT}.o: ${COMPOSANT}.cpp
+	g++ -c -o $@ $< $(CPPFLAGS)
+
 cryptopp/%.o: ./cryptopp/%.cpp
 	g++ -c -o $@ $< $(CPPFLAGS)
 
