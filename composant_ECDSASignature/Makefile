@@ -2,12 +2,12 @@ CPPFLAGS += `python3-config --includes`
 CPPFLAGS += -I./cryptopp/
 CPPFLAGS += -std=c++11
 LIBS=`python3-config --ldflags`
-
+LIBS += -L./cryptopp/ -lcryptopp
 
 COMPOSANT = component_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
-LIBSO_OBJS = ${COMPOSANT}.o cryptopp/eccrypto.o cryptopp/osrng.o cryptopp/hex.o
+LIBSO_OBJS = ${COMPOSANT}.o 
 
 all: test $(LIBSO)
 
