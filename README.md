@@ -1,6 +1,5 @@
 # Spécification du composant ECDSASignature
 
-
 **Titre :** Spécification de la Classe ECDSASignature pour la signature ECDSA
 
 **Auteurs :** Diouf_Samba & Alassaf_Mohamed
@@ -15,17 +14,17 @@
 
 **Contexte :**
 
-La classe ECDSASignature est une implémentation en C++ de l'algorithme de signature numérique ECDSA (Elliptic Curve Digital Signature Algorithm). Elle utilise la bibliothèque Crypto++, une bibliothèque open-source C++ pour le chiffrement, le déchiffrement, les codes d'authentification de message, les codes d'authentification de message à clé secrète etc.
+La classe ECDSASignature est une implémentation en C++ de l'algorithme de signature numérique ECDSA (Elliptic Curve Digital Signature Algorithm). Elle utilise la bibliothèque OpenSSL, une bibliothèque open-source C pour la cryptographie, qui implémente divers algorithmes de chiffrement, de déchiffrement, et de signature numérique.
 
 **Schéma bloc incluant les composants connexes**
 
 ```
-[Application] --> [ECDSASignature Class] --> [Crypto++ Library]
+[Application] --> [ECDSASignature Class] --> [OpenSSL Library]
 ```
 
 **Interface et interaction avec chaque autre composant :**
 
-La classe ECDSASignature fournit une interface vers la bibliothèque Crypto++. Elle utilise les classes et fonctions fournies par Crypto++ pour générer des signatures ECDSA.
+La classe ECDSASignature fournit une interface vers la bibliothèque OpenSSL. Elle utilise les classes et fonctions fournies par OpenSSL pour générer des signatures ECDSA.
 
 **Résumé :**
 
@@ -33,12 +32,13 @@ La classe ECDSASignature fournit une interface vers la bibliothèque Crypto++. E
 class ECDSASignature {
 public:
     ECDSASignature();
+    ~ECDSASignature();
     void Initialize(const std::string& hexPrivateKey);
     std::string Sign(const std::string& message);
 };
 ```
 
-Le constructeur par défaut de la classe `ECDSASignature` crée une instance de la classe.
+Le constructeur par défaut de la classe `ECDSASignature` crée une instance de la classe. Le destructeur libère les ressources allouées lors de l'utilisation de la classe.
 
 La méthode `Initialize` prend une clé privée sous forme de chaîne hexadécimale comme paramètre et initialise l'instance avec cette clé privée. La clé privée doit être générée à l'aide de l'algorithme ECDSA et doit être codée en hexadécimal.
 
@@ -58,6 +58,11 @@ Pour utiliser le composant ECDSASignature, vous devez d'abord cloner le dépôt 
 cd composant_ECDSASignature 
 git submodule init
 git submodule update
+```
+Vous devez aussi installer les fichiers d'en-tête nécessaires pour utiliser OpenSSL en utilisant la commande suivante :
+
+```bash
+sudo apt-get install libssl-dev
 ```
 
 **Compilation :**
@@ -102,25 +107,25 @@ Si une clé privée invalide est fournie à la méthode `Initialize`, Crypto++ l
 
 **Plan de test :**
 
-Nous testerons la méthode `Sign` de la classe `ECDSASignature` en utilisant des messages et des clés privées connus, et nous vérifierons si la signature générée correspond à ce qui est attendu.
+Nous testerons les méthodes `Initialize` et `Sign` de la classe `ECDSASignature` en utilisant des messages et des clés privées connus, et nous vérifierons si la signature générée correspond à ce qui est attendu.
 
 **Programme de test :**
 
 ```python
 import composant_ECDSASignature
 
-# Remplacez ceci par une clé privée valide et la signature attendue
+# Remplacez ceci par une clé privée valide
 known_private_key = "4b8e29b9b0dddd58a709edba7d6df6c07ebdaf5653e325114bc5318c238f87f0"
 known_message = "Hello, World!"
-expected_signature = "EXPECTED_SIGNATURE"  # Remplacez par la signature attendue
 
+# Test de signature
 signer = composant_ECDSASignature.ECDSASignature()
 signer.Initialize(known_private_key)
 signature = signer.Sign(known_message)
 
-assert signature == expected_signature, "Signature does not match the expected
-
- value."
+# Note: Comme ECDSA est un algorithme probabiliste, il n'est pas possible de comparer avec une "signature attendue" prédéfinie.
+# On vérifie plutôt que la signature renvoyée est bien de longueur 128, ce qui correspond à une signature de 512 bits en représentation hexadécimale.
+assert len(signature) == 128, "Signature does not have the expected length."
 
 # Test avec une clé privée invalide
 try:
@@ -142,7 +147,7 @@ else:
     assert False, "Expected an Exception for empty message."
 ```
 
-Cela vérifie que la signature générée correspond à ce qui est attendu, et que des exceptions sont levées lorsqu'une clé privée invalide ou un message vide sont utilisés.
+Cela vérifie que la signature générée a la bonne longueur et que des exceptions sont levées lorsqu'une clé privée invalide ou un message vide sont utilisés.
 
 ---
 
