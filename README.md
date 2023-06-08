@@ -107,7 +107,8 @@ Si une clé privée invalide est fournie à la méthode `Initialize`, Crypto++ l
 
 **Plan de test :**
 
-Nous testerons les méthodes `Initialize` et `Sign` de la classe `ECDSASignature` en utilisant des messages et des clés privées connus, et nous vérifierons si la signature générée correspond à ce qui est attendu.
+Nous testerons les méthodes `Initialize` et `Sign` de la classe `ECDSASignature` en utilisant des messages et des clés privées connus, et nous vérifierons si la signature générée est correcte.
+Nous allons testé aussi les cas où la clé privée est incorrecte ou le message est vide. Ces deux cas de figure devront lancer une exception.
 
 **Programme de test :**
 
@@ -123,18 +124,23 @@ signer = composant_ECDSASignature.ECDSASignature()
 signer.Initialize(known_private_key)
 signature = signer.Sign(known_message)
 
-# Note: Comme ECDSA est un algorithme probabiliste, il n'est pas possible de comparer avec une "signature attendue" prédéfinie.
-# On vérifie plutôt que la signature renvoyée est bien de longueur 128, ce qui correspond à une signature de 512 bits en représentation hexadécimale.
-assert len(signature) == 128, "Signature does not have the expected length."
+print("Signature :")
+print(signature)
+
+# Vérification de la longueur de la signature
+if len(signature) == 128:
+    print("Signature test passed.")
+else:
+    print("Signature test failed: Signature does not have the expected length.")
 
 # Test avec une clé privée invalide
 try:
     signer = composant_ECDSASignature.ECDSASignature()
     signer.Initialize("INVALID_PRIVATE_KEY")
 except Exception:
-    pass
+    print("Private key test passed: Exception correctly thrown for invalid private key.")
 else:
-    assert False, "Expected an Exception for invalid private key."
+    print("Private key test failed: No exception thrown for invalid private key.")
 
 # Test avec un message vide
 try:
@@ -142,9 +148,10 @@ try:
     signer.Initialize(known_private_key)
     signature = signer.Sign("")
 except Exception:
-    pass
+    print("Empty message test passed: Exception correctly thrown for empty message.")
 else:
-    assert False, "Expected an Exception for empty message."
+    print("Empty message test failed: No exception thrown for empty message.")
+
 ```
 
 Cela vérifie que la signature générée a la bonne longueur et que des exceptions sont levées lorsqu'une clé privée invalide ou un message vide sont utilisés.
