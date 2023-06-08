@@ -1,18 +1,15 @@
 CPPFLAGS += `python3-config --includes`
-CPPFLAGS += -I./cryptopp/
-CPPFLAGS += -std=c++11
-LIBS = `python3-config --ldflags`
-LIBS += -L./cryptopp/ -lcryptopp
+CPPFLAGS += -I/usr/include/openssl
+LIBS=`python3-config --ldflags`
+LIBS += -lssl -lcrypto
+
 
 COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
 
-cryptopp/libcryptopp.a: 
-	$(MAKE) -C cryptopp/ CXXFLAGS=-fPIC
-
-all: cryptopp/libcryptopp.a $(LIBSO)
+all: test $(LIBSO)
 
 include ../gcc.mk
 include ../pybind11.mk
@@ -23,10 +20,6 @@ test: $(LIBSO)
 	
 clean:
 	rm -f ${LIBSO} ${LIBSO_OBJS}
-	$(MAKE) -C cryptopp/ clean
 
 ${DESTINATION_LIBSO}: ${LIBSO}
 	cp $< $@
-
-${COMPOSANT}.o: ${COMPOSANT}.cpp
-	g++ -fPIC ${CPPFLAGS} -c $< -o $@
