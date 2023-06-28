@@ -19,14 +19,11 @@ La classe ECDSASignature est une implémentation en C++ de l'algorithme de signa
 **Schéma bloc incluant les composants connexes**
 
 ```
-[Application] --> [ECDSASignature Class] --> [OpenSSL Library]
+[Interface utilisateur] --> [ECDSASignature Class] --> [Envoi du message]
 ```
 
-**Interface et interaction avec chaque autre composant :**
-
-La classe ECDSASignature fournit une interface vers la bibliothèque OpenSSL. Elle utilise les classes et fonctions fournies par OpenSSL pour générer des signatures ECDSA.
-
 **Résumé :**
+La classe ECDSASignature fournit une interface vers la bibliothèque OpenSSL. Elle utilise les classes et fonctions fournies par OpenSSL pour générer des signatures ECDSA.
 
 ```cpp
 class ECDSASignature {
@@ -85,7 +82,7 @@ import composant_ECDSASignature
 signer = composant_ECDSASignature.ECDSASignature()
 
 # Initialisez l'instance avec votre clé privée
-signer.Initialize("YOUR_PRIVATE_KEY")
+signer.Initialize("4b8e29b9b0dddd58a709edba7d6df6c07ebdaf5653e325114bc5318c238f87f0")
 
 # Signez un message
 signature = signer.Sign("YOUR_MESSAGE")
@@ -99,7 +96,7 @@ Ainsi, vous pouvez utiliser le composant ECDSASignature pour signer des messages
 
 **Cas d’erreurs :**
 
-Si une clé privée invalide est fournie à la méthode `Initialize`, Crypto++ lancera une exception lors du chargement de la clé. De plus, si un message vide est passé à la méthode `Sign`, une exception sera également levée.
+Si une clé privée invalide est fournie à la méthode `Initialize`, Le composant lancera une exception lors du chargement de la clé. De plus, si un message vide est passé à la méthode `Sign`, une exception sera également levée.
 
 ---
 
