@@ -65,7 +65,7 @@ Prenons comme exemple l'utilisation de la clé privée `4b8e29b9b0dddd58a709edba
 
 Ensuite, nous avons utilisé la commande `openssl ec -in private_key.pem -noout -text` pour décoder le fichier pem et afficher la clé privée en format texte. C'est de cette manière que nous avons récupéré la clé privée à utiliser avec notre composant ECDSASignature.
 
-Maintenant reste plus qu'à appler la méthode `Sign` avec un message en paramètre pour obtenirl a signature du message.
+Maintenant reste plus qu'à appeler la méthode `Sign` avec un message en paramètre pour obtenir la signature de ce message.
 
 ```python
 import composant_ECDSASignature
