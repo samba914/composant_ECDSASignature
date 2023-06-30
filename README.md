@@ -14,7 +14,13 @@
 
 **Contexte :**
 
-La classe ECDSASignature est une implémentation en C++ de l'algorithme de signature numérique ECDSA (Elliptic Curve Digital Signature Algorithm). Elle utilise la bibliothèque OpenSSL, une bibliothèque open-source C pour la cryptographie, qui implémente divers algorithmes de chiffrement, de déchiffrement, et de signature numérique.
+Dans le cadre d'une application de transfert d'argent peer-to-peer, chaque transaction doit être sécurisée pour prévenir la fraude et garantir l'intégrité des transactions. À cette fin, la spécification de la signature ECDSA (Elliptic Curve Digital Signature Algorithm) est appliquée.
+
+Lorsqu'un utilisateur souhaite effectuer une transaction, il entre les détails de celle-ci dans l'application. Avant que la transaction ne soit soumise au réseau, l'application génère une clé privée ECDSA pour l'utilisateur (si celle-ci n'existe pas déjà). Cette clé est utilisée pour signer numériquement les détails de la transaction.
+
+Une fois la transaction signée, elle est soumise au réseau. Les autres utilisateurs, ou nœuds du réseau, utilisent alors la clé publique ECDSA associée à l'utilisateur pour vérifier la signature. Si la vérification réussit, cela signifie que la transaction a bien été initiée par l'utilisateur prétendu, assurant ainsi l'intégrité et la non-répudiation de la transaction.
+
+Cette utilisation de la signature ECDSA assure non seulement la sécurité des transactions au sein de l'application, mais contribue également à renforcer la confiance des utilisateurs dans le système, car ils savent que leurs transactions sont protégées contre les fraudes et les manipulations.
 
 **Schéma bloc incluant les composants connexes**
 
@@ -47,33 +53,12 @@ La méthode `Sign` prend un message à signer comme paramètre et renvoie la sig
 
 ---
 
-Pour utiliser le composant ECDSASignature, vous devez d'abord cloner le dépôt et récupérer les sous-modules nécessaires.
 
-**Clonage du dépôt et récupération des sous-modules :**
-
-```bash
-cd composant_ECDSASignature 
-git submodule init
-git submodule update
-```
-Vous devez aussi installer les fichiers d'en-tête nécessaires pour utiliser OpenSSL en utilisant la commande suivante :
-
-```bash
-sudo apt-get install libssl-dev
-```
-
-**Compilation :**
-
-Naviguez jusqu'au sous-répertoire `composant_ECDSASignature ` et compilez le code.
-
-```bash
-cd composant_ECDSASignature 
-make
-```
 
 **Utilisation :**
 
-Pour utiliser le composant ECDSASignature, vous devez importer le module dans votre script Python.
+Pour utiliser le composant ECDSASignature, vous devez importer le module dans votre script Python. En faisant import composant_ECDSASignature.
+ 
 
 ```python
 import composant_ECDSASignature
@@ -85,7 +70,7 @@ signer = composant_ECDSASignature.ECDSASignature()
 signer.Initialize("4b8e29b9b0dddd58a709edba7d6df6c07ebdaf5653e325114bc5318c238f87f0")
 
 # Signez un message
-signature = signer.Sign("YOUR_MESSAGE")
+signature = signer.Sign("Hello word!")
 
 # Affichez la signature
 print(signature)
@@ -154,5 +139,33 @@ else:
 Cela vérifie que la signature générée a la bonne longueur et que des exceptions sont levées lorsqu'une clé privée invalide ou un message vide sont utilisés.
 
 ---
+
+
+---
+ANNEXE
+---
+Pour utiliser le composant ECDSASignature, vous devez d'abord cloner le dépôt et récupérer les sous-modules nécessaires.
+
+**Clonage du dépôt et récupération des sous-modules :**
+
+```bash
+cd composant_ECDSASignature 
+git submodule init
+git submodule update
+```
+Vous devez aussi installer les fichiers d'en-tête nécessaires pour utiliser OpenSSL en utilisant la commande suivante :
+
+```bash
+sudo apt-get install libssl-dev
+```
+
+**Compilation :**
+
+Naviguez jusqu'au sous-répertoire `composant_ECDSASignature ` et compilez le code.
+
+```bash
+cd composant_ECDSASignature 
+make
+```
 
 **Fin de la spécification de la Classe ECDSASignature.**
