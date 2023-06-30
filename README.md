@@ -57,8 +57,15 @@ La méthode `Sign` prend un message à signer comme paramètre et renvoie la sig
 
 **Utilisation :**
 
-Pour utiliser le composant ECDSASignature, vous devez importer le module dans votre script Python. En faisant import composant_ECDSASignature.
- 
+Pour utiliser le composant ECDSASignature dans votre script Python, vous devez d'abord importer le module avec la commande : `import composant_ECDSASignature`.
+
+Ensuite, vous créez une instance de la classe ECDSASignature et vous utilisez la méthode `Initialize` pour la configurer avec une clé privée. Cette clé sera par la suite utilisée pour créer la signature.
+
+Prenons comme exemple l'utilisation de la clé privée `4b8e29b9b0dddd58a709edba7d6df6c07ebdaf5653e325114bc5318c238f87f0`. Pour obtenir cette clé privée, nous avons d'abord créé un fichier `private_key.pem` contenant une clé privée générée avec OpenSSL. Cela a été fait en utilisant la commande suivante : `openssl ecparam -name secp256k1 -genkey -noout -out private_key.pem`.
+
+Ensuite, nous avons utilisé la commande `openssl ec -in private_key.pem -noout -text` pour décoder le fichier pem et afficher la clé privée en format texte. C'est de cette manière que nous avons récupéré la clé privée à utiliser avec notre composant ECDSASignature.
+
+Maintenant reste plus qu'à appler la méthode `Sign` avec un message en paramètre pour obtenirl a signature du message.
 
 ```python
 import composant_ECDSASignature
