@@ -53,10 +53,6 @@ public:
 
     std::string Sign(const std::string &message)
     {
-        if (message.empty())
-        {
-            throw std::runtime_error("Message cannot be empty.");
-        }
 
         // Hash the message (SHA256)
         unsigned char hash[SHA256_DIGEST_LENGTH];
