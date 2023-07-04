@@ -88,7 +88,7 @@ Ainsi, vous pouvez utiliser le composant ECDSASignature pour signer des messages
 
 **Cas d’erreurs :**
 
-Si une clé privée invalide est fournie à la méthode `Initialize`, Le composant lancera une exception lors du chargement de la clé. De plus, si un message vide est passé à la méthode `Sign`, une exception sera également levée.
+Si une clé privée invalide est fournie à la méthode `Initialize`, Le composant lancera une exception lors du chargement de la clé.
 
 ---
 
@@ -96,13 +96,33 @@ Si une clé privée invalide est fournie à la méthode `Initialize`, Le composa
 
 **Plan de test :**
 
-Nous testerons les méthodes `Initialize` et `Sign` de la classe `ECDSASignature` en utilisant des messages et des clés privées connus, et nous vérifierons si la signature générée est correcte.
-Nous allons testé aussi les cas où la clé privée est incorrecte ou le message est vide. Ces deux cas de figure devront lancer une exception.
+Dans notre programme de test, nous allons examiner les méthodes `Initialize` et `Sign` de la classe `ECDSASignature`. Pour ce faire, nous allons utiliser un message et une clé privée connus afin de générer une signature. Ensuite, nous allons vérifier si la signature générée est correcte en utilisant notre fichier `verify_sig.cpp` qui utilise bibliothèque C de `ECDSA`.
+
+Dans le cadre de ce test, nous allons prendre comme entrée une clé privée, obtenue selon la méthode précédemment indiquée, un message spécifique, et la clé publique associée à la clé privée utilisée pour signer le message.
+
+Notre programme commence par signer le message avec une clé privée valide. Ensuite, il vérifie la validité de la signature obtenue. Cette vérification se fera en deux temps : premièrement, nous nous assurerons que la signature a bien une longueur valide(qu'elle comporte bien 124 caractères) et ensuite nous vérifierons qu'elle est bien au format hexadécimal.
+
+Pour effectuer une deuxième vérification et confirmer que la signature générée est bien une signature ECDSA valide, il suffit d'intégrer la signature obtenue dans la fonction principale `main` du fichier `verify_sig.cpp`. Plus précisément, cette signature devra être assignée à la variable `signature`.
+
+Ce programme invoquera ensuite la méthode `Verify` qui utilisera la fonction `ECDSA_do_verify` fournie par la bibliothèque OpenSSL en C pour confirmer la validité de la signature. 
+
+Pour compiler et exécuter ce programme, les commandes suivantes doivent être saisies dans le terminal :
+
+```bash
+g++ verify_sig.cpp -o verify_sig -lcrypto
+./verify_sig
+```
+En suivant ces étapes, vous pourrez ainsi vérifier efficacement la validité de la signature ECDSA.
+
+Enfin, nous testerons un cas d'erreur : nous tenterons de générer une signature en utilisant une clé privée qui ne respecte pas les normes valides. Nous vérifierons alors que notre programme se comporte correctement en levant une exception.
+
+Cela nous permettra de valider que notre programme gère correctement les erreurs et que les méthodes `Initialize` et `Sign` fonctionnent comme prévu.
 
 **Programme de test :**
 
 ```python
 import composant_ECDSASignature
+import re
 
 # Remplacez ceci par une clé privée valide
 known_private_key = "4b8e29b9b0dddd58a709edba7d6df6c07ebdaf5653e325114bc5318c238f87f0"
@@ -118,9 +138,15 @@ print(signature)
 
 # Vérification de la longueur de la signature
 if len(signature) == 128:
-    print("Signature test passed.")
+    print("Signature length test passed.")
 else:
-    print("Signature test failed: Signature does not have the expected length.")
+    print("Signature length test failed: Signature does not have the expected length.")
+
+# Vérification que la signature est en format hexadécimal
+if re.fullmatch(r'[0-9a-fA-F]*', signature):
+    print("Signature format test passed.")
+else:
+    print("Signature format test failed: Signature is not hexadecimal.")
 
 # Test avec une clé privée invalide
 try:
@@ -131,19 +157,9 @@ except Exception:
 else:
     print("Private key test failed: No exception thrown for invalid private key.")
 
-# Test avec un message vide
-try:
-    signer = composant_ECDSASignature.ECDSASignature()
-    signer.Initialize(known_private_key)
-    signature = signer.Sign("")
-except Exception:
-    print("Empty message test passed: Exception correctly thrown for empty message.")
-else:
-    print("Empty message test failed: No exception thrown for empty message.")
 
 ```
 
-Cela vérifie que la signature générée a la bonne longueur et que des exceptions sont levées lorsqu'une clé privée invalide ou un message vide sont utilisés.
 
 ---
 
