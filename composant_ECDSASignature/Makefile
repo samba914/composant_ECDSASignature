@@ -8,7 +8,7 @@ LIBS += -lssl -lcrypto
 COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
-LIBSO_OBJS = ${COMPOSANT}.o ../trezor-crypto/bip39uECC.o
+LIBSO_OBJS = ${COMPOSANT}.o ../trezor-crypto/bip39.o
 
 all: test $(LIBSO)
 
