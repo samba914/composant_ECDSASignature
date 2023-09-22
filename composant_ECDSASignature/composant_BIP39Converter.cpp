@@ -48,11 +48,14 @@ public:
     }
 };
 
+
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
     module.doc() = "BIP39Converter module";
+    module.doc() = "composant_ECDSASignature 1.0";
+    module.def("getVersion", &getVersion, "a function returning the version");
 
-    py::class_<BIP39Converter>(module, "BIP39Converter")
+    py::class_<BIP39Converter>(module, "BIP39Converter", py::dynamic_attr())
         .def(py::init<>())
         .def("privateKeyToMnemonic", &BIP39Converter::privateKeyToMnemonic)
         .def("mnemonicToSeed", &BIP39Converter::mnemonicToSeed);
