@@ -12,12 +12,6 @@ LIBSO_OBJS = ${COMPOSANT}.o
 
 all: test $(LIBSO)
 
-$(COMPOSANT).o: $(COMPOSANT).cpp
-	g++ -c $(CPPFLAGS) -o $@ $<
-
-$(LIBSO): $(LIBSO_OBJS)
-	g++ -shared $(LIBSO_OBJS) $(LIBS) -o $(LIBSO)
-
 include ../gcc.mk
 include ../pybind11.mk
 
