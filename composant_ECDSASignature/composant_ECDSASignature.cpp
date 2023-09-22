@@ -8,7 +8,9 @@
 #include <fstream>
 #include <sstream>
 #include <pybind11/pybind11.h>
-#include <bitcoin/bitcoin.hpp>
+extern "C" {
+#include <TrezorCrypto/bip39.h>
+}
 
 char version[] = "1.0";
 
@@ -22,15 +24,15 @@ class BIP39Converter
 public:
     std::string privateKeyToMnemonic(const std::string &privateKeyHex)
     {
-        bc::wallet::hd_private key(bc::config::base16(privateKeyHex));
-        return key.to_mnemonic().join(" ");
+        const char* mnemonic = mnemonic_from_data(privateKeyHex.data(), privateKeyHex.size());
+        return std::string(mnemonic);
     }
 
     std::string mnemonicToPrivateKey(const std::string &mnemonic)
     {
-        bc::string_list mnemonicList = bc::split(mnemonic, " ", true); // split by space
-        bc::wallet::hd_private key(mnemonicList);
-        return bc::encode_base16(key.secret());
+        uint8_t seed[64];
+        mnemonic_to_seed(mnemonic.c_str(), "", seed, NULL); // Assuming no passphrase
+        return std::string(reinterpret_cast<char*>(seed), 64);
     }
 };
 
@@ -39,11 +41,13 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
-    module.doc() = "BIP39Converter module";
-     module.def("getVersion", &getVersion, "a function returning the version");
+    module.doc() = "BIP39Converter module using TrezorCrypto";
 
-    py::class_<ECDSASignature>(module, "ECDSASignature", py::dynamic_attr())
+    py::class_<BIP39Converter>(module, "BIP39Converter")
         .def(py::init<>())
         .def("privateKeyToMnemonic", &BIP39Converter::privateKeyToMnemonic)
         .def("mnemonicToPrivateKey", &BIP39Converter::mnemonicToPrivateKey);
 }
+
+
+
