@@ -5,28 +5,26 @@ CPPFLAGS += -I/usr/local/include/bitcoin
 LIBS=`python3-config --ldflags`
 LIBS += -lssl -lcrypto
 
-COMPOSANT = composant_BIP39Converter 
+COMPOSANT = composant_ECDSASignature
+
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
 
 all: test $(LIBSO)
 
-# Compilation du fichier source en un fichier objet
-composant_BIP39Converter.o: composant_BIP39Converter.cpp
+$(COMPOSANT).o: $(COMPOSANT).cpp
 	g++ -c $(CPPFLAGS) -o $@ $<
 
-# Génération du fichier .so
-composant_BIP39Converter.so: composant_BIP39Converter.o
-	g++ -shared composant_BIP39Converter.o $(LIBS) -o $@
+$(LIBSO): $(LIBSO_OBJS)
+	g++ -shared $(LIBSO_OBJS) $(LIBS) -o $(LIBSO)
 
-# Inclusion des fichiers supplémentaires
 include ../gcc.mk
 include ../pybind11.mk
 
 test: $(LIBSO)
 	echo "execution du test"
 	python3 test.py
-
+	
 clean:
 	rm -f ${LIBSO} ${LIBSO_OBJS}
 
