@@ -18,10 +18,9 @@ const char *getVersion()
     return version;
 }
 
-#include <pybind11/pybind11.h>
-#include "bip39.h"
 
-namespace py = pybind11;
+
+
 
 class BIP39Converter
 {
@@ -51,7 +50,7 @@ public:
         return std::string(hexseed);
     }
 };
-
+namespace py = pybind11;
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
     module.doc() = "BIP39ConverterTrezor module";
