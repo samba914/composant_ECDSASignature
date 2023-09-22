@@ -20,7 +20,7 @@ const char *getVersion()
 
 
 
-
+namespace py = pybind11;
 
 class BIP39Converter
 {
@@ -37,10 +37,10 @@ public:
         return std::string(mnemonic);
     }
 
-    std::string mnemonicToPrivateKey(const std::string &mnemonic)
+    std::string mnemonicToSeed(const std::string &mnemonic)
     {
         uint8_t seed[512 / 8];
-        const int seed_size = mnemonicToPrivateKey(mnemonic.c_str(), "", seed, NULL);
+        const int seed_size = mnemonic_to_seed(mnemonic.c_str(), "", seed, NULL);
         
         char hexseed[2 * seed_size + 1];
         for(int i = 0; i < seed_size; i++)
@@ -50,16 +50,13 @@ public:
         return std::string(hexseed);
     }
 };
-namespace py = pybind11;
+
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
-    module.doc() = "BIP39ConverterTrezor module";
+    module.doc() = "BIP39Converter module";
 
-    py::class_<BIP39Converter>(module, "BIP39ConverterTrezor")
+    py::class_<BIP39Converter>(module, "BIP39Converter")
         .def(py::init<>())
         .def("privateKeyToMnemonic", &BIP39Converter::privateKeyToMnemonic)
-        .def("mnemonicToSeed", &BIP39Converter::mnemonicToPrivateKey);
+        .def("mnemonicToSeed", &BIP39Converter::mnemonicToSeed);
 }
-
-
-
