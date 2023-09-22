@@ -23,7 +23,8 @@ class BIP39Converter
 public:
     std::string privateKeyToMnemonic(const std::string &privateKeyHex)
     {
-        const char* mnemonic = mnemonic_from_data(privateKeyHex.data(), privateKeyHex.size());
+        const char* mnemonic = mnemonic_from_data(reinterpret_cast<const uint8_t*>(privateKeyHex.data()), privateKeyHex.size());
+
         return std::string(mnemonic);
     }
 
