@@ -48,6 +48,7 @@ public:
     }
 };
 
+namespace py = pybind11;
 
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
