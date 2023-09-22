@@ -1,10 +1,12 @@
 CPPFLAGS += `python3-config --includes`
 CPPFLAGS += -I/usr/include/openssl
+CPPFLAGS += -I/usr/local/include/bitcoin
+
 LIBS=`python3-config --ldflags`
 LIBS += -lssl -lcrypto
 
 
-COMPOSANT = composant_ECDSASignature
+COMPOSANT = composant_BIP39Converter 
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
