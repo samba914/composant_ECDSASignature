@@ -5,13 +5,18 @@ CPPFLAGS += -I/usr/local/include/bitcoin
 LIBS=`python3-config --ldflags`
 LIBS += -lssl -lcrypto
 
-
 COMPOSANT = composant_BIP39Converter 
 
 LIBSO = ${COMPOSANT}.so
 LIBSO_OBJS = ${COMPOSANT}.o
 
 all: test $(LIBSO)
+
+$(COMPOSANT).o: $(COMPOSANT).cpp
+    g++ -c $(CPPFLAGS) -o $@ $<
+
+$(LIBSO): $(LIBSO_OBJS)
+    g++ -shared $(LIBSO_OBJS) $(LIBS) -o $(LIBSO)
 
 include ../gcc.mk
 include ../pybind11.mk
