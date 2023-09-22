@@ -18,35 +18,48 @@ const char *getVersion()
     return version;
 }
 
+#include <pybind11/pybind11.h>
+#include "bip39.h"
+
+namespace py = pybind11;
+
 class BIP39Converter
 {
 public:
     std::string privateKeyToMnemonic(const std::string &privateKeyHex)
     {
-        const char* mnemonic = mnemonic_from_data(reinterpret_cast<const uint8_t*>(privateKeyHex.data()), privateKeyHex.size());
-
+        // Convert hex string to bytes
+        uint8_t data[32];
+        for (int i = 0; i < 32; i++)
+            sscanf(privateKeyHex.c_str() + 2*i, "%02hhx", &data[i]);
+            
+        // Convert to mnemonic
+        const char *mnemonic = mnemonic_from_data(data, sizeof(data));
         return std::string(mnemonic);
     }
 
     std::string mnemonicToPrivateKey(const std::string &mnemonic)
     {
-        uint8_t seed[64];
-        mnemonic_to_seed(mnemonic.c_str(), "", seed, NULL); // Assuming no passphrase
-        return std::string(reinterpret_cast<char*>(seed), 64);
+        uint8_t seed[512 / 8];
+        const int seed_size = mnemonic_to_seed(mnemonic.c_str(), "", seed, NULL);
+        
+        char hexseed[2 * seed_size + 1];
+        for(int i = 0; i < seed_size; i++)
+            sprintf(hexseed + 2*i, "%02x", seed[i]);
+        hexseed[2 * seed_size] = '\0';
+        
+        return std::string(hexseed);
     }
 };
 
-namespace py = pybind11;
-
-
 PYBIND11_MODULE(composant_BIP39Converter, module)
 {
-    module.doc() = "BIP39Converter module using TrezorCrypto";
+    module.doc() = "BIP39ConverterTrezor module";
 
-    py::class_<BIP39Converter>(module, "BIP39Converter")
+    py::class_<BIP39ConverterTrezor>(module, "BIP39ConverterTrezor")
         .def(py::init<>())
         .def("privateKeyToMnemonic", &BIP39Converter::privateKeyToMnemonic)
-        .def("mnemonicToPrivateKey", &BIP39Converter::mnemonicToPrivateKey);
+        .def("mnemonicToSeed", &BIP39Converter::mnemonicToPrivateKey);
 }
 
 
