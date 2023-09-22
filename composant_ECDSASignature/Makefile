@@ -8,7 +8,7 @@ LIBS += -lssl -lcrypto
 COMPOSANT = composant_ECDSASignature
 
 LIBSO = ${COMPOSANT}.so
-LIBSO_OBJS = ${COMPOSANT}.o
+LIBSO_OBJS = ${COMPOSANT}.o ../trezor-crypto/bip39uECC.o
 
 all: test $(LIBSO)
 
@@ -20,7 +20,7 @@ $(LIBSO): $(LIBSO_OBJS)
 
 include ../gcc.mk
 include ../pybind11.mk
-include ../trezor-crypto/bip39.h
+
 
 test: $(LIBSO)
 	echo "execution du test"
