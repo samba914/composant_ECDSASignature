@@ -8,9 +8,8 @@
 #include <fstream>
 #include <sstream>
 #include <pybind11/pybind11.h>
-extern "C" {
-#include <TrezorCrypto/bip39.h>
-}
+#include "trezor-crypto/bip39.h"
+
 
 char version[] = "1.0";
 
