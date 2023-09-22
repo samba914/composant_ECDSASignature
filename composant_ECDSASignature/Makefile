@@ -20,7 +20,7 @@ $(LIBSO): $(LIBSO_OBJS)
 
 include ../gcc.mk
 include ../pybind11.mk
-include ../trezor-crypto
+include ../trezor-crypto/bip39.h
 
 test: $(LIBSO)
 	echo "execution du test"
